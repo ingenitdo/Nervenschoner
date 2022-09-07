@@ -1,0 +1,218 @@
+* {
+    font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+.acp-title {
+    margin-top: 20px;
+    margin-left: 30px;
+    font-size: 24px;
+    line-height: 24px;
+    text-decoration: none;
+    color: #666666;
+    letter-spacing: 2px;
+    font-weight: 500;
+    /*text-transform: uppercase;*/
+}
+
+.acp-main {
+    margin: 20px 20px 10px 20px;
+    user-select: none;
+}
+.acp-config {
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 16px;
+    padding: 16px;
+}
+.acp-config-on{
+    background-color: rgba(187, 255, 187, 0.5);
+}
+.acp-config-off{
+    background-color: rgba(255, 187, 187, 0.5);
+}
+.acp-config-cookies {
+    padding: 20px;
+    font-size: 24px;
+    line-height: 24px;
+    font-weight: 700;
+    color: #555555;
+    white-space: nowrap;
+}
+.acp-config-tracker {
+    padding: 40px 20px 40px 55px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.acp-config-tracker-label {
+    margin-left: 35px;
+    font-size: 20px;
+    line-height: 20px;
+    color: #555555;
+    white-space: nowrap;
+}
+.acp-config-enable {
+    width: calc(100% - 40px);
+    min-width: 650px;
+    padding: 20px;
+    font-size: 20px;
+    line-height: 20px;
+
+    display: flex;
+    align-items: center;
+    /*justify-content: space-between;*/
+    color: #666666;
+}
+.acp-config-enable-button {
+    width: 6rem;
+    min-width: 6rem;
+    height: 6rem;
+    min-height: 6rem;
+    cursor: pointer;
+    text-align: center;
+    margin-right: 2rem;
+
+    border-radius: 2rem;
+
+    box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.3);
+    -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.3);
+    -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.3);
+
+    background-position: center;
+    background-size: 50%;
+    background-repeat: no-repeat;
+
+}
+.acp-config-enable-button-on {
+    background-color: #FF5149;
+
+    /*background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23FFFFFF" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"><path d="M620 5110 c-71 -15 -151 -60 -206 -115 -86 -85 -137 -210 -154 -375 -13 -129 -13 -3991 0 -4120 17 -165 68 -290 154 -375 149 -149 373 -163 619 -39 76 37 3457 1975 3546 2031 31 20 90 70 131 112 159 161 196 340 107 521 -37 76 -152 198 -238 253 -89 56 -3470 1994 -3546 2031 -37 19 -97 44 -133 56 -74 24 -214 34 -280 20z"/> </g></svg>');*/
+    /*background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23FFFFFF" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"><path d="M2482 5099 c-46 -14 -109 -80 -122 -128 -7 -27 -9 -419 -8 -1264 l3 -1225 30 -43 c96 -135 311 -104 354 52 9 34 11 329 9 1264 l-3 1220 -24 38 c-47 76 -151 113 -239 86z"/> <path d="M805 4402 c-69 -33 -255 -240 -373 -415 -206 -304 -336 -628 -409 -1017 -26 -139 -26 -701 0 -840 51 -271 123 -488 238 -719 135 -274 291 -484 521 -706 364 -351 788 -570 1307 -672 130 -26 150 -27 456 -28 289 0 332 2 440 22 442 82 835 261 1177 536 121 97 333 316 426 440 215 285 366 604 447 942 163 676 52 1368 -312 1957 -136 219 -356 472 -439 504 -116 44 -250 -39 -262 -164 -7 -76 12 -115 100 -211 621 -673 762 -1623 363 -2436 -330 -671 -985 -1121 -1739 -1194 -441 -43 -928 68 -1311 300 -191 115 -423 318 -562 489 -355 440 -527 1010 -472 1566 46 472 244 914 568 1265 96 103 115 142 109 217 -11 131 -157 219 -273 164z"/> </g> </svg>');*/
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23FFFFFF" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"><path d="M1076 5104 c-253 -57 -445 -229 -533 -479 l-28 -80 0 -1985 0 -1985 28 -80 c111 -316 400 -513 723 -492 180 12 325 79 460 212 64 64 90 98 126 172 90 179 83 -7 83 2173 0 2180 7 1994 -83 2173 -81 163 -239 296 -417 353 -104 33 -259 41 -359 18z"/> <path d="M3774 5110 c-143 -26 -265 -92 -380 -205 -64 -64 -89 -98 -126 -172 -90 -179 -83 7 -83 -2173 0 -2180 -7 -1994 83 -2173 81 -163 237 -295 417 -354 68 -22 98 -26 205 -27 141 -1 211 14 321 68 174 86 298 228 366 421 l28 80 0 1985 0 1985 -28 80 c-84 236 -262 407 -492 470 -72 19 -240 27 -311 15z"/> </g></svg>');
+
+    /*background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23FFFFFF" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"><path class="st0" d="M2500,5111c-14-5-470-194-1015-420c-775-322-997-419-1022-443c-67-64-65-45-60-764c4-671,8-739,52-974 c127-670,449-1283,928-1761c287-288,607-509,992-687c107-49,127-56,185-56s79,7,188,57c1125,514,1866,1575,1962,2811 c5,71,10,386,10,700c0,534-2,574-19,611c-10,22-32,52-48,67c-20,19-338,156-1028,444C2604,5120,2566,5134,2500,5111z M3445,4337 l870-362l-1-560c0-530-1-568-23-705c-12-80-33-192-46-250c-200-870-782-1604-1584-1995l-102-50l-132,67 C1617,891,1040,1643,860,2522c-51,250-55,318-55,903v549l870,362c479,200,877,363,885,363S2967,4536,3445,4337z"/><path class="st0" d="M3260,3344c-22-9-201-180-477-457l-443-441l-222,220c-181,180-232,224-270,239c-152,57-301-85-258-245 c11-40,46-79,313-348c166-167,318-313,337-325c45-28,139-30,190-4c20,9,272,255,561,545c486,487,527,531,539,574 C3574,3267,3414,3411,3260,3344z"/></g> </svg>');*/
+
+}
+.acp-config-enable-button-on:hover {
+    background-color: #ff635c;
+
+}
+.acp-config-enable-button-off {
+    background-color: #63b938;
+    /*background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%AAAAAA" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"><path d="M2477 5109 c-93 -22 -182 -96 -226 -189 l-26 -55 0 -865 0 -865 33 -67 c36 -73 87 -124 161 -160 38 -19 63 -23 141 -23 82 0 102 4 144 25 69 35 133 100 164 168 l27 57 3 829 c2 561 -1 846 -8 881 -40 190 -224 309 -413 264z"/> <path d="M1231 4159 c-79 -24 -234 -152 -383 -316 -316 -348 -523 -805 -578 -1278 -15 -132 -12 -426 5 -557 69 -514 296 -970 669 -1341 618 -615 1529 -823 2366 -541 148 50 385 168 525 262 571 381 942 992 1015 1669 18 163 8 485 -19 638 -83 463 -296 880 -622 1216 -126 129 -233 215 -298 240 -79 30 -194 24 -269 -15 -168 -86 -233 -283 -150 -455 22 -45 52 -78 182 -201 271 -256 439 -578 496 -950 6 -41 11 -143 11 -225 0 -626 -353 -1191 -914 -1460 -737 -354 -1599 -119 -2056 560 -126 189 -213 407 -252 636 -18 107 -21 150 -16 309 8 264 54 454 164 675 87 176 164 278 338 451 195 193 218 231 218 359 0 64 -5 91 -25 135 -32 70 -97 135 -168 168 -61 29 -180 39 -239 21z"/> </g><svg>');*/
+    /*background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23FFFFFF" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"><path d="M2482 5099 c-46 -14 -109 -80 -122 -128 -7 -27 -9 -419 -8 -1264 l3 -1225 30 -43 c96 -135 311 -104 354 52 9 34 11 329 9 1264 l-3 1220 -24 38 c-47 76 -151 113 -239 86z"/> <path d="M805 4402 c-69 -33 -255 -240 -373 -415 -206 -304 -336 -628 -409 -1017 -26 -139 -26 -701 0 -840 51 -271 123 -488 238 -719 135 -274 291 -484 521 -706 364 -351 788 -570 1307 -672 130 -26 150 -27 456 -28 289 0 332 2 440 22 442 82 835 261 1177 536 121 97 333 316 426 440 215 285 366 604 447 942 163 676 52 1368 -312 1957 -136 219 -356 472 -439 504 -116 44 -250 -39 -262 -164 -7 -76 12 -115 100 -211 621 -673 762 -1623 363 -2436 -330 -671 -985 -1121 -1739 -1194 -441 -43 -928 68 -1311 300 -191 115 -423 318 -562 489 -355 440 -527 1010 -472 1566 46 472 244 914 568 1265 96 103 115 142 109 217 -11 131 -157 219 -273 164z"/> </g> </svg>');*/
+
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23FFFFFF" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"><path d="M1076 5104 c-253 -57 -445 -229 -533 -479 l-28 -80 0 -1985 0 -1985 28 -80 c111 -316 400 -513 723 -492 180 12 325 79 460 212 64 64 90 98 126 172 90 179 83 -7 83 2173 0 2180 7 1994 -83 2173 -81 163 -239 296 -417 353 -104 33 -259 41 -359 18z"/> <path d="M3774 5110 c-143 -26 -265 -92 -380 -205 -64 -64 -89 -98 -126 -172 -90 -179 -83 7 -83 -2173 0 -2180 -7 -1994 83 -2173 81 -163 237 -295 417 -354 68 -22 98 -26 205 -27 141 -1 211 14 321 68 174 86 298 228 366 421 l28 80 0 1985 0 1985 -28 80 c-84 236 -262 407 -492 470 -72 19 -240 27 -311 15z"/> </g></svg>');
+
+}
+.acp-config-enable-button-off:hover {
+    background-color: #75c74e;
+
+}
+
+.acp-help {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    margin-right: 30px;
+    text-align: right;
+}
+.acp-help a {
+    margin-left: 30px;
+    font-size: 20px;
+    line-height: 20px;
+    text-decoration: none;
+    color: #666666;
+    transition: 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    cursor: pointer;
+}
+.acp-help-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+
+.acp-help a:hover {
+    color: #c83f3f;
+}
+
+/*TOGGLE*/
+.acp-config-tracker-button {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 32px;
+
+}
+
+.acp-config-tracker-button input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.acp-config-tracker-button-slider {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-transition: .4s;
+    transition: .4s;
+    cursor: pointer;
+}
+
+.acp-config-tracker-button-slider:before {
+    position: absolute;
+    content: "";
+    height: 24px;
+    width: 24px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    /*-webkit-transition: .4s;*/
+    /*transition: .4s;*/
+}
+
+/*input:checked + .acp-slider {*/
+/*    !*background-color: #00bb00;*!*/
+/*    background-color: #63b938;*/
+/*}*/
+.acp-config-tracker-button-on .acp-config-tracker-button-slider {
+    background-color: #63b938;
+}
+.acp-config-tracker-button-on-disabled .acp-config-tracker-button-slider {
+    background-color: #666666;
+}
+.acp-config-tracker-button-off .acp-config-tracker-button-slider {
+    /*background-color: #FF5149;*/
+    background-color: #AAAAAA;
+}
+.acp-config-tracker-button-off-disabled .acp-config-tracker-button-slider {
+    background-color: #666666;
+}
+.acp-config-tracker-button-on .acp-config-tracker-button-slider:before {
+    -webkit-transform: translateX(28px);
+    -ms-transform: translateX(28px);
+    transform: translateX(28px);
+}
+.acp-config-tracker-button-on-disabled .acp-config-tracker-button-slider:before {
+    -webkit-transform: translateX(28px);
+    -ms-transform: translateX(28px);
+    transform: translateX(28px);
+}
+
+
+/* Rounded sliders */
+.acp-config-tracker-button-slider.acp-config-tracker-button-slider-round {
+    border-radius: 26px;
+}
+
+.acp-config-tracker-button-slider.acp-config-tracker-button-slider-round:before {
+    border-radius: 50%;
+}

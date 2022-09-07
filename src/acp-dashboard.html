@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <title data-i18n="dashboardName"></title>
+    <link rel="stylesheet" href="css/acp.css" type="text/css">
+    <link href="css/acp-dashboard.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://code.cdn.mozilla.net/fonts/fira.css">
+
+  </head>
+
+  <body>
+    <div id="dashboard-nav">
+      <div class="logo_wrapper">
+        <img class="logo" src="img/acp/acp-icon-on.svg" alt="Logo"/>
+        <div>Nervenschoner</div>
+      </div>
+
+<div class="nav">
+      <span id="help-button" class="tabButton active" data-pane="acp-help.html">Hilfe</span>
+      <span id="imprint-button" class="tabButton" data-pane="acp-imprint.html">Impressum</span>
+      <span id="data-privacy-button" class="tabButton" data-pane="acp-data-privacy.html">Datenschutz</span>
+</div>
+      <img class="logo_verbraucherzentrale" src="img/BAY_300_PNG.png" alt="Logo_Verbraucherzentrale_Bayern"/>
+    </div>
+
+    <div id="unsavedWarning">
+      <div>
+        <span data-i18n="dashboardUnsavedWarning"></span>&emsp;
+        <button data-i18n="dashboardUnsavedWarningStay"></button>&emsp;
+        <button data-i18n="dashboardUnsavedWarningIgnore"></button>
+      </div>
+      <div></div>
+    </div>
+    <iframe id="acp-iframe" src="acp-help.html"></iframe>
+  </body>
+
+  <script src="js/acp-dashboard.js"></script>
+</html>

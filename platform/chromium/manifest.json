@@ -1,0 +1,108 @@
+{
+  "author": "ingenit GmbH&Co.KG",
+  "background": {
+    "page": "background.html"
+  },
+  "browser_action": {
+    "default_icon": {
+      "16": "img/icon_16.png",
+      "32": "img/icon_32.png"
+    },
+    "default_title": "Nervenschoner",
+    "default_popup": "acp-popup.html"
+  },
+  "commands": {
+    "launch-element-zapper": {
+      "description": "__MSG_popupTipZapper__"
+    },
+    "launch-element-picker": {
+      "description": "__MSG_popupTipPicker__"
+    },
+    "launch-logger": {
+      "description": "__MSG_popupTipLog__"
+    },
+    "open-dashboard": {
+      "description": "__MSG_popupTipDashboard__"
+    },
+    "relax-blocking-mode": {
+      "description": "__MSG_relaxBlockingMode__"
+    },
+    "toggle-cosmetic-filtering": {
+      "description": "__MSG_toggleCosmeticFiltering__"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://easylist.to/easylist/*",
+        "https://secure.fanboy.co.nz/*",
+        "https://publicsuffix.org/list/*",
+        "https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/*",
+        "https://nervenschoner.eu/*"
+      ],
+      "js": [
+        "/js/vapi.js",
+        "/js/vapi-client.js",
+        "/js/contentscript.js"
+      ],
+      "all_frames": true,
+      "match_about_blank": true,
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://easylist.to/easylist/*",
+        "https://secure.fanboy.co.nz/*",
+        "https://publicsuffix.org/list/*",
+        "https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/*",
+        "https://nervenschoner.eu/*"
+      ],
+      "js": [
+        "/js/scriptlets/subscriber.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "content_security_policy": "script-src 'self'; object-src 'self'",
+  "default_locale": "de",
+  "description": "__MSG_extShortDesc__",
+  "icons": {
+    "16": "img/icon_16.png",
+    "32": "img/icon_32.png",
+    "64": "img/icon_64.png",
+    "128": "img/icon_128.png"
+  },
+  "incognito": "split",
+  "manifest_version": 2,
+  "minimum_chrome_version": "66.0",
+  "name": "Nervenschoner",
+  "options_ui": {
+    "page": "dashboard.html",
+    "open_in_tab": true
+  },
+  "permissions": [
+    "contextMenus",
+    "privacy",
+    "storage",
+    "tabs",
+    "unlimitedStorage",
+    "webNavigation",
+    "webRequest",
+    "webRequestBlocking",
+    "https://easylist.to/easylist/*",
+    "https://secure.fanboy.co.nz/*",
+    "https://publicsuffix.org/list/*",
+    "https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/*",
+    "https://nervenschoner.eu/*",
+    "*://*/*"
+  ],
+  "short_name": "Nervenschoner",
+  "storage": {
+    "managed_schema": "managed_storage.json"
+  },
+  "version": "1.0",
+  "web_accessible_resources": [
+    "/web_accessible_resources/*"
+  ]
+}
