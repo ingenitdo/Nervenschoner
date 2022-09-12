@@ -1,6 +1,3 @@
-[![Badge Mozilla]][Mozilla]
-[![Badge Chrome]][Chrome]
-[![Badge License]][License]
 
 ***
 
@@ -11,7 +8,7 @@
 Nervenschoner
 </h1>
 <p align="center">
-**Nervenschoner - der Blocker für Einwilligungs Banner**
+<strong>Nervenschoner - der Blocker für Einwilligungs Banner</strong>
 </p>
 
 ***
