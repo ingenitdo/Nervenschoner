@@ -19,6 +19,8 @@
     Home: https://github.com/gorhill/uBlock
 */
 
+/* globals browser */
+
 'use strict';
 
 /******************************************************************************/
@@ -58,9 +60,6 @@ window.addEventListener('webextFlavor', function() {
     dontCacheResponseHeaders =
         vAPI.webextFlavor.soup.has('firefox');
 }, { once: true });
-
-// https://github.com/uBlockOrigin/uBlock-issues/issues/1553
-const supportsFloc = document.interestCohort instanceof Function;
 
 /******************************************************************************/
 
@@ -560,9 +559,6 @@ const onHeadersReceived = function(details) {
     if ( injectCSP(fctxt, pageStore, responseHeaders) === true ) {
         modifiedHeaders = true;
     }
-    if ( supportsFloc && foilFloc(fctxt, responseHeaders) ) {
-        modifiedHeaders = true;
-    }
 
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1376932
     //   Prevent document from being cached by the browser if we modified it,
@@ -1010,23 +1006,6 @@ const injectCSP = function(fctxt, pageStore, responseHeaders) {
 
 /******************************************************************************/
 
-// https://github.com/uBlockOrigin/uBlock-issues/issues/1553
-// https://github.com/WICG/floc#opting-out-of-computation
-
-const foilFloc = function(fctxt, responseHeaders) {
-    const hn = fctxt.getHostname();
-    if ( scriptletFilteringEngine.hasScriptlet(hn, 1, 'no-floc') === false ) {
-        return false;
-    }
-    responseHeaders.push({
-        name: 'Permissions-Policy',
-        value: 'interest-cohort=()' }
-    );
-    return true;
-};
-
-/******************************************************************************/
-
 // https://github.com/gorhill/uBlock/issues/1163
 //   "Block elements by size".
 // https://github.com/gorhill/uBlock/issues/1390#issuecomment-187310719
@@ -1131,6 +1110,11 @@ const strictBlockBypasser = {
 
 /******************************************************************************/
 
+// https://github.com/uBlockOrigin/uBlock-issues/issues/2350
+//   Added scriptlet injection attempt at onResponseStarted time as per
+//   https://github.com/AdguardTeam/AdguardBrowserExtension/issues/1029 and
+//   https://github.com/AdguardTeam/AdguardBrowserExtension/blob/9ab85be5/Extension/src/background/webrequest.js#L620
+
 const webRequest = {
     onBeforeRequest,
 
@@ -1147,6 +1131,19 @@ const webRequest = {
                 onHeadersReceived,
                 { urls: [ 'http://*/*', 'https://*/*' ] },
                 [ 'blocking', 'responseHeaders' ]
+            );
+            vAPI.net.addListener(
+                'onResponseStarted',
+                details => {
+                    const pageStore = µb.pageStoreFromTabId(details.tabId);
+                    if ( pageStore === null ) { return; }
+                    if ( pageStore.getNetFilteringSwitch() === false ) { return; }
+                    scriptletFilteringEngine.injectNow(details);
+                },
+                {
+                    types: [ 'main_frame', 'sub_frame' ],
+                    urls: [ 'http://*/*', 'https://*/*' ]
+                }
             );
             vAPI.net.unsuspend({ all: true });
         };

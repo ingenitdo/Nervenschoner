@@ -27,17 +27,13 @@ import logger from './logger.js';
 import µb from './background.js';
 import { entityFromDomain } from './uri-utils.js';
 import { sessionFirewall } from './filtering-engines.js';
-
-import {
-    StaticExtFilteringHostnameDB,
-    StaticExtFilteringSessionDB,
-} from './static-ext-filtering-db.js';
+import { StaticExtFilteringHostnameDB } from './static-ext-filtering-db.js';
+import * as sfp from './static-filtering-parser.js';
 
 /******************************************************************************/
 
 const duplicates = new Set();
 const filterDB = new StaticExtFilteringHostnameDB(1);
-const sessionFilterDB = new StaticExtFilteringSessionDB();
 
 const $headers = new Set();
 const $exceptions = new Set();
@@ -92,16 +88,17 @@ httpheaderFilteringEngine.freeze = function() {
 httpheaderFilteringEngine.compile = function(parser, writer) {
     writer.select('HTTPHEADER_FILTERS');
 
-    const { compiled, exception } = parser.result;
-    const headerName = compiled.slice(15, -1);
+    const isException = parser.isException();
+    const root = parser.getBranchFromType(sfp.NODE_TYPE_EXT_PATTERN_RESPONSEHEADER);
+    const headerName = parser.getNodeString(root);
 
     // Tokenless is meaningful only for exception filters.
-    if ( headerName === '' && exception === false ) { return; }
+    if ( headerName === '' && isException === false ) { return; }
 
     // Only exception filters are allowed to be global.
     if ( parser.hasOptions() === false ) {
-        if ( exception ) {
-            writer.push([ 64, '', 1, compiled ]);
+        if ( isException ) {
+            writer.push([ 64, '', 1, headerName ]);
         }
         return;
     }
@@ -110,24 +107,17 @@ httpheaderFilteringEngine.compile = function(parser, writer) {
     //   Ignore instances of exception filter with negated hostnames,
     //   because there is no way to create an exception to an exception.
 
-    for ( const { hn, not, bad } of parser.extOptions() ) {
+    for ( const { hn, not, bad } of parser.getExtFilterDomainIterator() ) {
         if ( bad ) { continue; }
         let kind = 0;
-        if ( exception ) {
+        if ( isException ) {
             if ( not ) { continue; }
             kind |= 1;
         } else if ( not ) {
             kind |= 1;
         }
-        writer.push([ 64, hn, kind, compiled ]);
+        writer.push([ 64, hn, kind, headerName ]);
     }
-};
-
-httpheaderFilteringEngine.compileTemporary = function(parser) {
-    return {
-        session: sessionFilterDB,
-        selector: parser.result.compiled.slice(15, -1),
-    };
 };
 
 // 01234567890123456789
@@ -152,10 +142,6 @@ httpheaderFilteringEngine.fromCompiledContent = function(reader) {
     }
 };
 
-httpheaderFilteringEngine.getSession = function() {
-    return sessionFilterDB;
-};
-
 httpheaderFilteringEngine.apply = function(fctxt, headers) {
     if ( filterDB.size === 0 ) { return; }
 
@@ -173,9 +159,6 @@ httpheaderFilteringEngine.apply = function(fctxt, headers) {
     $headers.clear();
     $exceptions.clear();
 
-    if ( sessionFilterDB.isNotEmpty ) {
-        sessionFilterDB.retrieve([ null, $exceptions ]);
-    }
     filterDB.retrieve(hostname, [ $headers, $exceptions ]);
     filterDB.retrieve(entity, [ $headers, $exceptions ], 1);
     if ( $headers.size === 0 ) { return; }

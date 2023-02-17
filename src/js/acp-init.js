@@ -7,7 +7,7 @@ const setSettings = () => {
     timeStamp: 1636363940962,
     version: "1.44.0",
     userSettings: {
-      externalLists: "https://nervenschoner.eu/nervenschoner.txt",
+      externalLists: ["https://nervenschoner.eu/nervenschoner.txt"],
       importedLists: ["https://nervenschoner.eu/nervenschoner.txt"]
     },
     selectedFilterLists: [
@@ -42,7 +42,7 @@ const setSettings = () => {
     urlFilteringString: userData.urlFilteringString || '',
     hostnameSwitchesString: userData.hostnameSwitchesString || '',
     externalLists: userData.userSettings.externalLists,
-    importedLists: userData.userSettings.externalLists
+    importedLists: userData.userSettings.importedLists
   });
   µb.saveUserFilters(userData.userFilters);
   if ( Array.isArray(userData.selectedFilterLists) ) {

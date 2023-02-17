@@ -1,58 +1,177 @@
+[![Badge Commits]][Commit Rate]
+[![Badge Issues]][Issues]
+[![Badge Localization]][Crowdin]
+[![Badge License]][License]
+[![Badge NPM]][NPM]
+[![Badge Mozilla]][Mozilla]
+[![Badge Chrome]][Chrome]
 
 ***
 
 <h1 align="center">
 <sub>
-<img src="https://github.com/ingenitdo/Nervenschoner/blob/main/src/img/icon_32.png" height="32" width="32" alt="Nervenschoner-Icon">
+<img src="https://github.com/gorhill/uBlock/blob/master/src/img/ublock.svg" height="38" width="38">
 </sub>
-Nervenschoner
+uBlock Origin (uBO)
 </h1>
 <p align="center">
-<strong>Nervenschoner - der Blocker für Einwilligungs Banner</strong>
+<sub><a href="https://github.com/gorhill/uBlock/wiki/uBlock-Origin-is-completely-unrelated-to-the-web-site-ublock.org"><b>BEWARE!</b> uBO is (and has always been) COMPLETELY UNRELATED to the website <code>ublock.org</code></a>.</sub>
 </p>
 
 ***
 
-**Nervenschoner - blocks consent banners to make browsing a breeze again**
-
-Blocking consent banners in Chrome and Firefox browsers. Developed by a Bavarian consumer organisation ([Verbraucherzentrale Bayern](https://www.verbraucherzentrale-bayern.de/digitale-welt/endlich-ungestoert-surfen-74152)).
-
-Using the technology of [uBlock origin](https://github.com/gorhill/uBlock), but focusing on ease of use.
-
-From a judicial perspective, the constent banners are never clicked on by the plugin, but simply filtered out of the things that are displayed. As a consequence, users grant fewer permissions for data usage to tracking companies.
-
-Published under GPL 3, so you can adapt the plugin for your own language!
-
-<sup>A "Nervenschoner" is German for something that gives rest to your nerves.</sup>
-
+<p align="center">
+<a href="https://addons.mozilla.org/addon/ublock-origin/"><img src="https://user-images.githubusercontent.com/585534/107280546-7b9b2a00-6a26-11eb-8f9f-f95932f4bfec.png" alt="Get uBlock Origin for Firefox"></a>
+<a href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm"><img src="https://user-images.githubusercontent.com/585534/107280622-91a8ea80-6a26-11eb-8d07-77c548b28665.png" alt="Get uBlock Origin for Chromium"></a>
+<a href="https://microsoftedge.microsoft.com/addons/detail/ublock-origin/odfafepnkmbhccpbejgmiehpchacaeak"><img src="https://user-images.githubusercontent.com/585534/107280673-a5ece780-6a26-11eb-9cc7-9fa9f9f81180.png" alt="Get uBlock Origin for Microsoft Edge"></a>
+<a href="https://addons.opera.com/extensions/details/ublock/"><img src="https://user-images.githubusercontent.com/585534/107280692-ac7b5f00-6a26-11eb-85c7-088926504452.png" alt="Get uBlock Origin for Opera"></a>
+</p>
 
 ***
-	
-Nervig: Ungefragt ploppen beim Besuch fast aller Websites Einwilligungsbanner auf und verlangen die Zustimmung des Besuchers zur Datenverwendung und Cookies. Ärgerlich, denn die Wahl des gewünschten Knopfes frisst nicht nur Zeit, sondern stört auch die Konzentration. Genervt von den vielen Bannern, drücken viele VerbraucherInnen schnell auf den großen Zustimmen-Knopf und geben ihre Daten frei. 
-	
-Um die Nerven zu schonen – und VerbraucherInnen dabei zu unterstützen weniger Datenspuren im Netz zu hinterlassen - gibt es nun den „Nervenschoner“ der Verbraucherzentrale Bayern. Der Nervenschoner tut genau was der Name verspricht und blockt viele der lästigen Banner einfach weg. Folge: Entspanntes Surfen ohne Einwilligungs-Banner.
 
-Nach der Installation im Browser muss man sich um nichts kümmern - das Plugin blockiert einfach so viele Einwilligungs-Banner wie möglich. Und holt sich regelmäßig und automatisch aus der Blocker-Community die Information, welche Banner wie blockiert werden können.
+uBO is **NOT** an "ad blocker"; it is a [wide-spectrum content blocker][Blocking] for Chromium and Firefox with CPU and memory efficiency as primary features. After a new installation, the default behavior of uBO is to block ads, trackers, and malware sites through [EasyList][EasyList], [EasyPrivacy][EasyPrivacy], [Peter Lowe's Blocklist][Peter Lowe's Blocklist], [Online Malicious URL Blocklist][Malicious Blocklist], and uBO's [filter lists][uBO Filters].
 
-An dem grünen Schutzschild oben rechts im Browser kann man sehen, dass der Schutz vor Einwilligungs-Bannern aktiv ist.
+***
 
-Hilfeseiten und FAQ zum Nervenschoner-Plugin: [https://www.verbraucherzentrale-bayern.de/digitale-welt/endlich-ungestoert-surfen-74152](https://www.verbraucherzentrale-bayern.de/digitale-welt/endlich-ungestoert-surfen-74152)
+* [Documentation](#documentation)
+* [General Information](#general-information)
+* [Installation](#installation)
+  * [Chromium](#chromium)
+  * [Firefox / Firefox for Android](#firefox--firefox-for-android)
+* [Release History](#release-history)
+* [About](#about)
+* [License](#license)
+* [Privacy Policy]
+* [Wiki](https://github.com/gorhill/uBlock/wiki)
 
-## Keine Probleme beim Surfen
+## Documentation
 
-Mit dem Blocker-Plugin surft es sich wie gewohnt (nur entspannter). Cookies werden gar nicht angefasst, so dass Shopping und Logins bei den Lieblingswebdiensten einfach weiter funktionieren.
+ Basic mode | Advanced-user mode
+:----------:|:------------------:
+[Popup user interface]|[A point-and-click firewall that is configurable on a per-site basis][Dynamic Filters]
+<a href="https://github.com/gorhill/uBlock/wiki/Quick-guide:-popup-user-interface"><img src="https://user-images.githubusercontent.com/585534/84045360-b10ee580-a976-11ea-9e91-29c2107b47c2.png"/></a><br><sup>.<br>.</sup>|<a href="https://github.com/gorhill/uBlock/wiki/Dynamic-filtering:-quick-guide"><img src="https://user-images.githubusercontent.com/585534/84045366-b1a77c00-a976-11ea-9121-e8c8f35c66c8.png"/></a><br><sup>Configure as you wish.<br>The image shows 3rd-party scripts and frames blocked by default everywhere.</sup>
 
-Falls sich eine Webseite mal doch ungewöhnlich verhält, was selten vorkommt, schaltet ein Klick auf den großen Stopp-Knopf im Plugin das Blockieren für diese Webseite dauerhaft aus.
+Visit the [wiki][Wiki] for documentation.
 
-## Nervenschoner-Technik
+For support, questions, or help, visit [/r/uBlockOrigin][Reddit].
 
-Das Plugin funktioniert im Hintergrund als Firewall, und verbietet alle Verbindungen, die  Einwilligungs-Banner laden wollen. Ergebnis: Die Banner werden nicht geladen, und daher auch nicht angezeigt. Was ein Einwilligungs-Banner ist und was blockiert werden muss, das weiß das Plugin aus den Signaturen in „schwarzen“ Banner-Listen, die von einer internationalen Gemeinschaft gepflegt werden. Das Nervenschoner-Plugin verwendet eine Blockierliste aus dem EasyList Forum.
+## General Information
 
-Nebenbei blockiert der Nervenschoner standardmäßig auch Tracker, die WebseitenbesucherInnen bei ihrem Weg durch das Internet über die Schulter schauen wollen. Dazu werden die Blockierlisten EasyPrivacy und AdGuard Tracking Protection genutzt.
+uBO is **NOT** an "ad blocker"; it is a wide-spectrum content blocker. uBO blocks ads through the EasyList filter syntax and [extends][Extended Syntax] the syntax to work with custom rules and filters. Furthermore, the advanced mode allows uBO to work in [default-deny mode][Default Deny], which will cause [all 3rd-party network requests][3rd Party Requests] to be blocked by default unless allowed by the user.
 
-Die Technologie für das Plugin baut auf dem ausgereiften OpenSource-Projekt [uBlock origin](https://github.com/gorhill/uBlock) auf, das umfangreich auf die eigenen Vorlieben anpassbar ist und beispielsweise auch Werbeanzeigen herausfiltern könnte.
+It is important to note that using a blocker is **NOT** [theft]. Do not fall for this creepy idea. The _ultimate_ logical consequence of `blocking = theft` is the criminalization of the inalienable right to privacy.
 
-## Wir stehen hinter dem Nervenschoner
-Das Nervenschoner-Plugin ist ein Werkzeug der [Verbraucherzentrale Bayern](https://www.verbraucherzentrale-bayern.de/digitale-welt/endlich-ungestoert-surfen-74152). Er wurde umgesetzt in enger Kooperation mit der [ZD.B-Themenplattform Verbraucherbelange](https://www.bayern-innovativ.de/verbraucherbelange).
+Ads, "unintrusive" or not, are just the visible portion of the privacy-invading means entering your browser when you visit most sites. **uBO's primary goal is to help users neutralize these privacy-invading methods** in a way that welcomes those users who do not wish to use more technical, involved means (such as [uMatrix]).
 
-Ermöglicht wurde das Plugin durch eine Förderung des Bayerischen Staatsministeriums für Umwelt und Verbraucherschutz.
+EasyList, EasyPrivacy, Peter Lowe's Blocklist, Online Malicious URL Blocklist, and uBO's filter lists are default enabled when you install uBO. Many other lists are available to block trackers, analytics, and more. Hosts files are also supported.
+
+Once you install uBO, you may easily unselect any preselected filter lists if you think uBO blocks too much. For reference, Adblock Plus installs with only EasyList, ABP filters, and Acceptable Ads enabled by default.
+
+## Installation
+
+[Required Permissions][Permissions]
+
+#### Chromium
+
+[Chrome Web Store][Chrome]
+
+[Microsoft Edge Add-ons][Edge] (Published by: [Nicole Rolls][Nicole Rolls])
+
+[Opera Add-ons][Opera]
+
+[Development Build][Chrome Dev]
+
+uBO should be compatible with any Chromium-based browser.
+
+#### Firefox / Firefox for Android
+
+[Firefox Add-ons][Mozilla]
+
+[Development Build][Beta]
+
+#### All Browsers
+
+Do **NOT** use any other content blocker concurrently with uBO to benefit from its higher efficiency. uBO will [perform][Performance] as well as or better than most of the other popular ad blockers. Other blockers can prevent uBO's privacy or anti-blocker-defusing features from working correctly.
+
+Do **NOT** use uBO along with other [similarly-purposed blockers][Similarly-Purposed].
+
+[Manual Installation][Manual Installation]
+
+#### Enterprise Deployment
+
+[Deploying uBO][Deployment]
+
+## Release History
+
+[Releases Page][Releases]
+
+## About
+
+[Manifesto][Manifesto]
+
+Free. Open-source. For users by users. No donations sought.
+
+Without the preset filter lists, this extension is nothing. If you ever want to contribute something, think about the people working hard to maintain the filter lists you are using, which were made available to use by all for free.
+
+You can help contribute by translating uBO on [Crowdin].
+
+## License
+
+[GPLv3][License]
+
+
+<!----------------------------------------------------------------------------->
+
+[Peter Lowe's Blocklist]: https://pgl.yoyo.org/adservers/
+[Malicious Blocklist]: https://gitlab.com/malware-filter/urlhaus-filter#malicious-url-blocklist
+[3rd Party Requests]: https://requestpolicycontinued.github.io/#what-are-cross-site-requests
+[Similarly-Purposed]: https://twitter.com/gorhill/status/1033706103782170625
+[Performance]: https://www.debugbear.com/blog/chrome-extension-performance-2021#how-do-ad-blockers-and-privacy-tools-affect-browser-performance
+[EasyPrivacy]: https://easylist.to/#easyprivacy
+[Chrome Dev]: https://chrome.google.com/webstore/detail/ublock-origin-development/cgbcahbpdhpcegmbfconppldiemgcoii
+[EasyList]: https://easylist.to/#easylist
+[Mozilla]: https://addons.mozilla.org/addon/ublock-origin/
+[Crowdin]: https://crowdin.com/project/ublock
+[Chrome]: https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm
+[Reddit]: https://www.reddit.com/r/uBlockOrigin/
+[Theft]: https://twitter.com/LeaVerou/status/518154828166725632
+[Opera]: https://addons.opera.com/extensions/details/ublock/
+[Edge]: https://microsoftedge.microsoft.com/addons/detail/ublock-origin/odfafepnkmbhccpbejgmiehpchacaeak
+[NPM]: https://www.npmjs.com/package/@gorhill/ubo-core
+
+[Manifesto]: MANIFESTO.md
+[License]: LICENSE.txt
+
+[Nicole Rolls]: https://github.com/nicole-ashley
+
+
+<!---------------------------------[ Internal ]-------------------------------->
+
+[Popup User Interface]: https://github.com/gorhill/uBlock/wiki/Quick-guide:-popup-user-interface
+[Manual Installation]: https://github.com/gorhill/uBlock/tree/master/dist#install
+[Extended Syntax]: https://github.com/gorhill/uBlock/wiki/Static-filter-syntax#extended-syntax
+[Dynamic Filters]: https://github.com/gorhill/uBlock/wiki/Dynamic-filtering:-quick-guide
+[Privacy Policy]: https://github.com/gorhill/uBlock/wiki/Privacy-policy
+[Default Deny]: https://github.com/gorhill/uBlock/wiki/Dynamic-filtering:-default-deny
+[uBO Filters]: https://github.com/uBlockOrigin/uAssets/tree/master/filters
+[Permissions]: https://github.com/gorhill/uBlock/wiki/Permissions
+[Commit Rate]: https://github.com/gorhill/uBlock/commits/master
+[Deployment]: https://github.com/gorhill/uBlock/wiki/Deploying-uBlock-Origin
+[Blocking]: https://github.com/gorhill/uBlock/wiki/Blocking-mode
+[Releases]: https://github.com/gorhill/uBlock/releases
+[UMatrix]: https://github.com/gorhill/uMatrix
+[Issues]: https://github.com/uBlockOrigin/uBlock-issues/issues
+[Beta]: https://github.com/gorhill/uBlock/blob/master/dist/README.md#for-beta-version
+[Wiki]: https://github.com/gorhill/uBlock/wiki
+
+
+<!----------------------------------[ Badges ]--------------------------------->
+
+[Badge Localization]: https://d322cqt584bo4o.cloudfront.net/ublock/localized.svg
+[Badge Commits]: https://img.shields.io/github/commit-activity/m/gorhill/ublock?label=Commits
+[Badge Mozilla]: https://img.shields.io/amo/rating/ublock-origin?label=Firefox
+[Badge License]: https://img.shields.io/badge/License-GPLv3-blue.svg
+[Badge Chrome]: https://img.shields.io/chrome-web-store/rating/cjpalhdlnbpafiamejdnhcphjbkeiagm?label=Chrome
+[Badge Issues]: https://img.shields.io/github/issues/uBlockOrigin/uBlock-issues
+[Badge NPM]: https://img.shields.io/npm/v/@gorhill/ubo-core
+

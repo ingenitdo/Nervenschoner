@@ -26,7 +26,8 @@
 import staticNetFilteringEngine from './static-net-filtering.js';
 import µb from './background.js';
 import { CompiledListWriter } from './static-filtering-io.js';
-import { StaticFilteringParser } from './static-filtering-parser.js';
+import { i18n$ } from './i18n.js';
+import * as sfp from './static-filtering-parser.js';
 
 import {
     domainFromHostname,
@@ -110,7 +111,7 @@ const initWorker = function() {
         entries.set(listKey, {
             title: listKey !== µb.userFiltersPath ?
                 entry.title :
-                vAPI.i18n('1pPageName'),
+                i18n$('1pPageName'),
             supportURL: entry.supportURL || ''
         });
     }
@@ -133,21 +134,24 @@ const fromNetFilter = async function(rawFilter) {
     if ( typeof rawFilter !== 'string' || rawFilter === '' ) { return; }
 
     const writer = new CompiledListWriter();
-    const parser = new StaticFilteringParser();
-    parser.setMaxTokenLength(staticNetFilteringEngine.MAX_TOKEN_LENGTH);
-    parser.analyze(rawFilter);
+    const parser = new sfp.AstFilterParser({
+        expertMode: true,
+        nativeCssHas: vAPI.webextFlavor.env.includes('native_css_has'),
+        maxTokenLength: staticNetFilteringEngine.MAX_TOKEN_LENGTH,
+    });
+    parser.parse(rawFilter);
 
-    const compiler = staticNetFilteringEngine.createCompiler(parser);
-    if ( compiler.compile(writer) === false ) { return; }
+    const compiler = staticNetFilteringEngine.createCompiler();
+    if ( compiler.compile(parser, writer) === false ) { return; }
 
     await initWorker();
 
     const id = messageId++;
     worker.postMessage({
         what: 'fromNetFilter',
-        id: id,
+        id,
         compiledFilter: writer.last(),
-        rawFilter: rawFilter
+        rawFilter,
     });
 
     return new Promise(resolve => {
@@ -170,9 +174,9 @@ const fromExtendedFilter = async function(details) {
 
     worker.postMessage({
         what: 'fromExtendedFilter',
-        id: id,
+        id,
         domain: domainFromHostname(hostname),
-        hostname: hostname,
+        hostname,
         ignoreGeneric:
             staticNetFilteringEngine.matchRequestReverse(
                 'generichide',

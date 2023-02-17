@@ -1,0 +1,30 @@
+Az uBO Lite (uBOL) egy kísérleti, *engedély nélküli* MV3-alapú tartalomblokkoló.
+
+Az alapértelmezett szabálykészlet megfelel a uBlock Origin alapértelmezett szűrőkészletének:
+
+- uBlock Origin beépített filter listái
+- EasyList
+- EasyPrivacy
+- Peter Lowe hirdetés és nyomkövető szerver listája
+
+További szabályokat adhat hozzá a beállítások oldalon - kattintson a _Cogs_ ikonra a felugró panelen.
+
+Az uBOL teljes mértékben deklaratív, vagyis nincs szükség állandó uBOL folyamatra a szűréshez, és a CSS/JS injekció alapú tartalomszűrést maga a böngésző végzi megbízhatóan, nem pedig a kiterjesztés. Ez azt jelenti, hogy az uBOL maga nem fogyaszt CPU/memória erőforrásokat, amíg a tartalom blokkolása folyamatban van – az uBOL szervizmunkás folyamatára _csak_ akkor van szükség, amikor az előugró panellel vagy a beállítási oldalakkal lép kapcsolatba.
+
+Az uBOL nem igényel széles körű „adatok olvasása és módosítása” engedélyt a telepítéskor, ezért korlátozott képességei vannak, mint az uBlock Origin vagy más tartalomblokkolók, amelyek széles körű „adatok olvasása és módosítása” engedélyeket igényelnek a telepítéskor.
+
+Az uBOL azonban lehetővé teszi, hogy *kifejezetten* kiterjesztett engedélyeket adjon az Ön által választott bizonyos webhelyekhez, hogy jobban szűrhessen ezeken a webhelyeken kozmetikai szűréssel és szkriptlet-injekciókkal.
+
+Ha kiterjesztett engedélyeket szeretne adni egy adott webhelyen, nyissa meg az előugró panelt, és válasszon magasabb szűrési módot, például Optimális vagy Teljes.
+
+A böngésző ekkor figyelmezteti Önt a bővítmény által kért további engedélyek megadásának hatásaira az aktuális webhelyen, és közölnie kell a böngészővel, hogy elfogadja-e vagy elutasítja a kérést.
+
+Ha elfogadja az uBOL további engedélyekre vonatkozó kérését az aktuális webhelyen, akkor jobban tudja szűrni az aktuális webhely tartalmát.
+
+Az alapértelmezett szűrési módot az uBOL beállítási oldalán állíthatja be. Ha az Optimális vagy a Teljes módot választja alapértelmezettként, akkor az uBOL-nak engedélyt kell adnia az adatok olvasására és módosítására az összes webhelyen.
+
+Ne feledje, hogy ez még folyamatban van, a következő célokkal:
+
+- Nincsenek széles körű gazdagép-engedélyek a telepítés során – a kiterjesztett engedélyeket a felhasználó kifejezetten webhelyenként adja meg.
+
+- Teljesen deklaratív a megbízhatóság és a CPU/memória hatékonysága szempontjából.

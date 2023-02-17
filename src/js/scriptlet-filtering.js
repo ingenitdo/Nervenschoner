@@ -27,11 +27,8 @@ import logger from './logger.js';
 import µb from './background.js';
 import { redirectEngine } from './redirect-engine.js';
 import { sessionFirewall } from './filtering-engines.js';
-
-import {
-    StaticExtFilteringHostnameDB,
-    StaticExtFilteringSessionDB,
-} from './static-ext-filtering-db.js';
+import { StaticExtFilteringHostnameDB } from './static-ext-filtering-db.js';
+import * as sfp from './static-filtering-parser.js';
 
 import {
     domainFromHostname,
@@ -46,7 +43,6 @@ const scriptletCache = new µb.MRUCache(32);
 const reEscapeScriptArg = /[\\'"]/g;
 
 const scriptletDB = new StaticExtFilteringHostnameDB(1);
-const sessionScriptletDB = new StaticExtFilteringSessionDB();
 
 let acceptedCount = 0;
 let discardedCount = 0;
@@ -88,37 +84,23 @@ const scriptletFilteringEngine = {
 const contentscriptCode = (( ) => {
     const parts = [
         '(',
-        function(hostname, scriptlets) {
+        function(injector, hostname, scriptlets) {
+            const doc = document;
             if (
-                document.location === null ||
-                hostname !== document.location.hostname
+                doc.location === null ||
+                hostname !== doc.location.hostname ||
+                typeof self.uBO_scriptletsInjected === 'boolean'
             ) {
                 return;
             }
-            const injectScriptlets = function(d) {
-                let script;
-                try {
-                    script = d.createElement('script');
-                    script.appendChild(d.createTextNode(
-                        decodeURIComponent(scriptlets))
-                    );
-                    (d.head || d.documentElement).appendChild(script);
-                } catch (ex) {
-                }
-                if ( script ) {
-                    if ( script.parentNode ) {
-                        script.parentNode.removeChild(script);
-                    }
-                    script.textContent = '';
-                }
-            };
-            injectScriptlets(document);
+            injector(doc, decodeURIComponent(scriptlets));
+            if ( typeof self.uBO_scriptletsInjected === 'boolean' ) { return 0; }
         }.toString(),
         ')(',
+            vAPI.scriptletsInjector, ', ',
             '"', 'hostname-slot', '", ',
             '"', 'scriptlets-slot', '"',
         ');',
-        '\n0;',
     ];
     return {
         parts: parts,
@@ -126,8 +108,7 @@ const contentscriptCode = (( ) => {
         scriptletsSlot: parts.indexOf('scriptlets-slot'),
         assemble: function(hostname, scriptlets) {
             this.parts[this.hostnameSlot] = hostname;
-            this.parts[this.scriptletsSlot] =
-                encodeURIComponent(scriptlets);
+            this.parts[this.scriptletsSlot] = encodeURIComponent(scriptlets);
             return this.parts.join('');
         }
     };
@@ -136,25 +117,28 @@ const contentscriptCode = (( ) => {
 // TODO: Probably should move this into StaticFilteringParser
 // https://github.com/uBlockOrigin/uBlock-issues/issues/1031
 //   Normalize scriptlet name to its canonical, unaliased name.
-const normalizeRawFilter = function(rawFilter) {
-    const rawToken = rawFilter.slice(4, -1);
-    const rawEnd = rawToken.length;
-    let end = rawToken.indexOf(',');
-    if ( end === -1 ) { end = rawEnd; }
-    const token = rawToken.slice(0, end).trim();
-    const alias = token.endsWith('.js') ? token.slice(0, -3) : token;
-    let normalized = redirectEngine.aliases.get(`${alias}.js`);
-    normalized = normalized === undefined
-        ? alias
-        : normalized.slice(0, -3);
-    let beg = end + 1;
-    while ( beg < rawEnd ) {
-        end = rawToken.indexOf(',', beg);
-        if ( end === -1 ) { end = rawEnd; }
-        normalized += ', ' + rawToken.slice(beg, end).trim();
-        beg = end + 1;
+const normalizeRawFilter = function(parser) {
+    const root = parser.getBranchFromType(sfp.NODE_TYPE_EXT_PATTERN_SCRIPTLET);
+    const walker = parser.getWalker(root);
+    const args = [];
+    for ( let node = walker.next(); node !== 0; node = walker.next() ) {
+        switch ( parser.getNodeType(node) ) {
+            case sfp.NODE_TYPE_EXT_PATTERN_SCRIPTLET_TOKEN:
+            case sfp.NODE_TYPE_EXT_PATTERN_SCRIPTLET_ARG:
+                args.push(parser.getNodeString(node));
+                break;
+            default:
+                break;
+        }
     }
-    return `+js(${normalized})`;
+    walker.dispose();
+    if ( args.length !== 0 ) {
+        const full = `${args[0]}.js`;
+        if ( redirectEngine.aliases.has(full) ) {
+            args[0] = redirectEngine.aliases.get(full).slice(0, -3);
+        }
+    }
+    return `+js(${args.join(', ')})`;
 };
 
 const lookupScriptlet = function(rawToken, reng, toInject) {
@@ -179,10 +163,7 @@ const lookupScriptlet = function(rawToken, reng, toInject) {
         } else {
             token = `${token}.js`;
         }
-        content = reng.resourceContentFromName(
-            token,
-            'application/javascript'
-        );
+        content = reng.resourceContentFromName(token, 'text/javascript');
         if ( !content ) { return; }
         if ( args ) {
             content = patchScriptlet(content, args);
@@ -250,14 +231,14 @@ scriptletFilteringEngine.compile = function(parser, writer) {
     writer.select('SCRIPTLET_FILTERS');
 
     // Only exception filters are allowed to be global.
-    const { raw, exception } = parser.result;
-    const normalized = normalizeRawFilter(raw);
+    const isException = parser.isException();
+    const normalized = normalizeRawFilter(parser);
 
     // Tokenless is meaningful only for exception filters.
-    if ( normalized === '+js()' && exception === false ) { return; }
+    if ( normalized === '+js()' && isException === false ) { return; }
 
     if ( parser.hasOptions() === false ) {
-        if ( exception ) {
+        if ( isException ) {
             writer.push([ 32, '', 1, normalized ]);
         }
         return;
@@ -267,10 +248,10 @@ scriptletFilteringEngine.compile = function(parser, writer) {
     //   Ignore instances of exception filter with negated hostnames,
     //   because there is no way to create an exception to an exception.
 
-    for ( const { hn, not, bad } of parser.extOptions() ) {
+    for ( const { hn, not, bad } of parser.getExtFilterDomainIterator() ) {
         if ( bad ) { continue; }
         let kind = 0;
-        if ( exception ) {
+        if ( isException ) {
             if ( not ) { continue; }
             kind |= 1;
         } else if ( not ) {
@@ -278,13 +259,6 @@ scriptletFilteringEngine.compile = function(parser, writer) {
         }
         writer.push([ 32, hn, kind, normalized ]);
     }
-};
-
-scriptletFilteringEngine.compileTemporary = function(parser) {
-    return {
-        session: sessionScriptletDB,
-        selector: parser.result.compiled,
-    };
 };
 
 // 01234567890123456789
@@ -309,10 +283,6 @@ scriptletFilteringEngine.fromCompiledContent = function(reader) {
     }
 };
 
-scriptletFilteringEngine.getSession = function() {
-    return sessionScriptletDB;
-};
-
 const $scriptlets = new Set();
 const $exceptions = new Set();
 const $scriptletToCodeMap = new Map();
@@ -325,9 +295,6 @@ scriptletFilteringEngine.retrieve = function(request, options = {}) {
     $scriptlets.clear();
     $exceptions.clear();
 
-    if ( sessionScriptletDB.isNotEmpty ) {
-        sessionScriptletDB.retrieve([ null, $exceptions ]);
-    }
     scriptletDB.retrieve(hostname, [ $scriptlets, $exceptions ]);
     const entity = request.entity !== ''
         ? `${hostname.slice(0, -request.domain.length)}${request.entity}`
@@ -402,10 +369,6 @@ scriptletFilteringEngine.retrieve = function(request, options = {}) {
     return out.join('\n');
 };
 
-scriptletFilteringEngine.hasScriptlet = function(hostname, exceptionBit, scriptlet) {
-    return scriptletDB.hasStr(hostname, exceptionBit, scriptlet);
-};
-
 scriptletFilteringEngine.injectNow = function(details) {
     if ( typeof details.frameId !== 'number' ) { return; }
     const request = {
@@ -431,13 +394,17 @@ scriptletFilteringEngine.injectNow = function(details) {
         matchAboutBlank: true,
         runAt: 'document_start',
     });
-    if ( logEntries === undefined ) { return; }
-    promise.then(results => {
-        if ( Array.isArray(results) === false || results[0] !== 0 ) { return; }
-        for ( const entry of logEntries ) {
-            logOne(entry.tabId, entry.url, entry.token);
-        }
-    });
+    if ( logEntries !== undefined ) {
+        promise.then(results => {
+            if ( Array.isArray(results) === false || results[0] !== 0 ) {
+                return;
+            }
+            for ( const entry of logEntries ) {
+                logOne(entry.tabId, entry.url, entry.token);
+            }
+        });
+    }
+    return scriptlets;
 };
 
 scriptletFilteringEngine.toSelfie = function() {
